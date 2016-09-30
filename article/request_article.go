@@ -10,6 +10,7 @@ import (
 
 type articleRequest struct {
 	ArticleID article.Identifier
+	UserID    int64
 }
 
 func (req *articleRequest) Parse(ctx context.Context) error {

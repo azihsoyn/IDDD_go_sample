@@ -27,6 +27,19 @@ func newRepository(ctx context.Context) *Repository {
 		Content: "world",
 	}, nil).Times(10)
 
+	repo.EXPECT().ResolveAll().Return([]article.Article{
+		{
+			ID:      1,
+			Title:   "hello",
+			Content: "world1",
+		},
+		{
+			ID:      2,
+			Title:   "hello",
+			Content: "world2",
+		},
+	}, nil).Times(10)
+
 	return &Repository{
 		ArticleRepository: repo,
 	}
