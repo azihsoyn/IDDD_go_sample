@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+  mysql:
+    build: .
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: "iddd_sample_go"
+      MYSQL_USER: "root"
+    volumes:
+      - ./initdb.d:/docker-entrypoint-initdb.d

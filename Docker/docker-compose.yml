@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+  app:
+    build: .
+    volumes:
+      - '$GOPATH/src:/go/src'
+    ports:
+      - '8000:8000'
+    command: 'bash -c "go install github.com/azihsoyn/IDDD_go_sample && IDDD_go_sample"'
+    links:
+      - mysql
+
+  mysql:
+    extends:
+      file: ./mysql/mysql-service.yml
+      service: mysql

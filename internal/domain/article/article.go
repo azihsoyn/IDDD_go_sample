@@ -10,7 +10,7 @@ type Article struct {
 
 type Articles []Article
 
-func MergeUserMathcedArticle(as []Article, userID int64) []Article {
+func UserSpecificArticle(as []Article, userID int64) []Article {
 	ret := make([]Article, 0, len(as))
 	if userID == 1 {
 		ret = append(ret, Article{

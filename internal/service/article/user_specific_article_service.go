@@ -18,15 +18,6 @@ func (s *userSpecificArticleService) Get(userID int64) ([]article.Article, error
 		return nil, err
 	}
 
-	ret := make([]article.Article, 0, len(as))
-	if userID == 1 {
-		ret = append(ret, article.Article{
-			ID:      100,
-			Title:   "for user 1",
-			Content: "this is recommended by your activity",
-		})
-	}
-	ret = append(ret, as...)
-
-	return ret, nil
+	as = article.UserSpecificArticle(as, userID)
+	return as, nil
 }
