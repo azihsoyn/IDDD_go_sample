@@ -39,17 +39,24 @@ func New() article.Repository {
 		panic(err)
 	}
 	return &articleRepository{
-		db: db,
+		db:           db,
+		articleCache: lwcache.New("article"),
 	}
 
 }
 
 func (repo *articleRepository) ResolveByID(articleID article.Identifier) (article.Article, error) {
-	as, err := repo.resolveArticleByIDFromMySQL(articleID)
+	if a, ok := repo.resolveArticleByIDFromCache(articleID); ok {
+		return a, nil
+	}
+
+	a, err := repo.resolveArticleByIDFromMySQL(articleID)
 	if err != nil {
 		return article.Article{}, err
 	}
-	return as, nil
+
+	repo.storeArticleToCache(a)
+	return a, nil
 }
 
 func (repo *articleRepository) ResolveAll() ([]article.Article, error) {

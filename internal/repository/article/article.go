@@ -2,7 +2,11 @@
 
 package articlerepo
 
-import "github.com/azihsoyn/IDDD_go_sample/internal/domain/article"
+import (
+	"time"
+
+	"github.com/azihsoyn/IDDD_go_sample/internal/domain/article"
+)
 
 func (repo *articleRepository) resolveArticleByIDFromMySQL(articleID article.Identifier) (article.Article, error) {
 	query := `
@@ -27,4 +31,16 @@ func (repo *articleRepository) resolveArticleByIDFromMySQL(articleID article.Ide
 		Title:   title,
 		Content: content,
 	}, nil
+}
+
+func (repo *articleRepository) resolveArticleByIDFromCache(articleID article.Identifier) (article.Article, bool) {
+	if c, ok := repo.articleCache.Get(articleID); ok {
+		return c.(article.Article), true
+	}
+
+	return article.Article{}, false
+}
+
+func (repo *articleRepository) storeArticleToCache(a article.Article) {
+	repo.articleCache.Set(a.ID, a, 5*time.Minute)
 }
